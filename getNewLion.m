@@ -1,5 +1,5 @@
 %This Function was used to create a new Generation
-function [newCell]=getNewGene(createNum)
+function [newCell]=getNewLion(createNum)
  arguments
       createNum
  end
@@ -7,7 +7,7 @@ function [newCell]=getNewGene(createNum)
  newCell = cell(1,createNum);
 
  for i=1:createNum
-    x = randi([0 1],1,26);
+    x = randi([0 1],1,48);
     newCell{i} = x;
  end
  

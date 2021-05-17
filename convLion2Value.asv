@@ -1,4 +1,4 @@
-function [valueVec]=convGene2Value(gene)
+function [valueVec]=convLion2Value(liom)
  arguments
      gene
  end
