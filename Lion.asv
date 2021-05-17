@@ -7,8 +7,10 @@ Pc_2 = 0.6;
 Pm = 0.5;
 
 %Data Variable & Structure Initialization
-nowCubs = [];
+nowCubs = {};
 nowCubsFitness = [];
+maleCubs = {};
+femaleCubs = {};
 %Step1. Pride Generation
 %---Generate territorial male and female---
 Xm = getNewLion();
@@ -19,12 +21,23 @@ Xf = getNewLion();
 crossoverCubs = crossover({Xm,Xf},Pc_1, Pc_2);
 mutationCubs = mutation(crossoverCubs, Pm);
 nowCubs = [crossoverCubs(1:4),mutationCubs(1:4)];
-for i=1:length(nowCubs)
-    vec = convLion2Value(nowCubs(i));
-    nowCubsFitness()
+% for i=1:length(nowCubs)
+%     vec = convLion2Value(nowCubs{i});
+%     nowCubsFitness(i) = fitness(vec(1), vec(2));
+% end
+location = convLion2Value(nowCubs{1});
+for i=2:length(nowCubs)
+    vec = convLion2Value(nowCubs{i});
+    location = cat(1,vec,location);
 end
+[team,C] = kmeans(location, 2);
 
-
+for i=1:length(team)
+    if(team(i)==1)
+        %male cubs
+        maleCubs{end+1} = 
+    end
+end
 
 %Step3. Territorial Defense
 

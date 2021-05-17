@@ -9,6 +9,8 @@ Pm = 0.5;
 %Data Variable & Structure Initialization
 nowCubs = {};
 nowCubsFitness = [];
+maleCubs = {};
+femaleCubs = {};
 %Step1. Pride Generation
 %---Generate territorial male and female---
 Xm = getNewLion();
@@ -30,6 +32,19 @@ for i=2:length(nowCubs)
 end
 [team,C] = kmeans(location, 2);
 
+for i=1:length(team)
+    if(team(i)==1)
+        %male cubs
+        maleCubs{end+1} = nowCubs{i};
+    else
+        %female cubs
+        femaleCubs{end+1} = nowCubs{i};
+    end
+end
+
+if(length(maleCubs) ~= length(femaleCubs))
+
+end
 
 %Step3. Territorial Defense
 
