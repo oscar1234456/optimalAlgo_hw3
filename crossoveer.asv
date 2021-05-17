@@ -1,0 +1,21 @@
+function [cubs] = crossover(parentLion, pc)
+arguments
+     parentLion
+     pc
+end
+cubs = {};
+%Generate c1 cubs
+GOD = rand(1,48);
+c1 = 1;  %Crossover1
+
+    %---Select c1 pointer---
+for i=1:length(GOD)
+    if(GOD(i)<=pc)
+        c1 = i;
+        break
+    end
+end
+    %---Genersate First Cub---
+
+
+return

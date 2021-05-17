@@ -6,18 +6,23 @@ Pc_1 = 0.2;
 Pc_2 = 0.6;
 Pm = 0.5;
 
-%Data Variable & Structure Initial
-
-
-
-
+%Data Variable & Structure Initialization
+nowCubs = [];
+nowCubsFitness = [];
 %Step1. Pride Generation
-
-
+%---Generate territorial male and female---
+Xm = getNewLion();
+Xf = getNewLion();
 
 %Step2. Mating
-
-
+%---Generate cubs from territorial male and female (Crossover)---
+crossoverCubs = crossover({Xm,Xf},Pc_1, Pc_2);
+mutationCubs = mutation(crossoverCubs, Pm);
+nowCubs = [crossoverCubs(1:4),mutationCubs(1:4)];
+for i=1:length(nowCubs)
+    vec = convLion2Value(nowCubs(i));
+    nowCubsFitness()
+end
 
 
 
