@@ -1,25 +1,26 @@
 %Initialization
 Age_mat = 3;
-B_strength = 5;
+Bstrength = 5;
 Gen_max = 50;
 Pc_1 = 0.2;
 Pc_2 = 0.6;
 Pm = 0.5;
 
 %Data Variable & Structure Initialization
+Bcount = 0;
 nowAge = 0;
 nowGen = 0;
-nowCubs = {};
-nowCubsFitness = [];
-maleCubs = {};
-femaleCubs = {};
+
 %Step1. Pride Generation
 %---Generate territorial male and female---
 Xm = getNewLion();
 Xf = getNewLion();
 
 while(nowGen <= Gen_max)
-
+    nowCubsFitness = [];
+    maleCubs = {};
+    femaleCubs = {};
+    disp("Mating");
     %Step2. Mating
     %---Generate cubs from territorial male and female (Crossover & mutation)---
     crossoverCubs = crossover({Xm,Xf},Pc_1, Pc_2);
@@ -79,6 +80,7 @@ while(nowGen <= Gen_max)
         end
     end
 
+    disp("Territorial Defense");
     %Step3. Territorial Defense
     nowAge = 0;
     flag = true;
@@ -108,8 +110,56 @@ while(nowGen <= Gen_max)
     if(~flag)
         continue
     end
-
+    disp("Territorial Takeover");
     %Step4.Territorial Takeover
-
+    vec = convLion2Value(Xm);
+    XmFit = fitness(vec(1), vec(2));
+    vec = convLion2Value(Xf);
+    XfFit = fitness(vec(1), vec(2));
+    maleCubsFitness = [];
+    femaleCubsFitness = [];
+    for k=1:length(maleCubs)
+        vec = convLion2Value(maleCubs{k});
+        maleCubsFitness(end+1) = fitness(vec(1), vec(2));
+    end
+    for k=1:length(femaleCubs)
+        vec = convLion2Value(femaleCubs{k});
+        femaleCubsFitness(end+1) = fitness(vec(1), vec(2));
+    end
+    [bestMaleCubs, bestMaleCubsIndex] = min(maleCubsFitness);
+    [bestFemaleCubs, bestFemaleCubsIndex] = min(femaleCubsFitness);
+    if(bestMaleCubs < XmFit)
+     %bestMaleCubs win!!
+        Xm = maleCubs{bestMaleCubsIndex};
+    end
+    if(bestFemaleCubs < XfFit)
+    %bestFemaleCubs win!!
+        Xf = femaleCubs{bestFemaleCubsIndex};
+        Bcount = 0;
+    else
+        %bestFemaleCubs lose.
+        Bcount = Bcount + 1;
+    end
+    vec = convLion2Value(Xf);
+    XfFit = fitness(vec(1), vec(2));
+    if(Bcount>Bstrength)
+        newFemaleLionFitness = 9999999999;
+        count = 0;
+        while(newFemaleLionFitness >= XfFit)
+            disp("find new Female");
+            newFemaleLion = getNewLion();
+            vec = convLion2Value(newFemaleLion);
+            newFemaleLionFitness = fitness(vec(1), vec(2));
+            fprintf("count:%d, new:%f, old:%f \n",count,newFemaleLionFitness,XfFit);
+            count = count+1;
+            if(count > 10000)
+                newFemaleLion = Xf;
+                break
+            end
+        end
+        Xf = newFemaleLion;
+    end
+    nowGen = nowGen + 1;
 
 end
+
