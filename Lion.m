@@ -16,7 +16,7 @@ nowGen = 0;
 Xm = getNewLion();
 Xf = getNewLion();
 
-while(nowGen <= Gen_max)
+while(nowGen <= Gen_max) %keep running until Gen_max
     nowCubsFitness = [];
     maleCubs = {};
     femaleCubs = {};
@@ -26,10 +26,6 @@ while(nowGen <= Gen_max)
     crossoverCubs = crossover({Xm,Xf},Pc_1, Pc_2);
     mutationCubs = mutation(crossoverCubs, Pm);
     nowCubs = [crossoverCubs(1:4),mutationCubs(1:4)];
-    % for i=1:length(nowCubs)
-    %     vec = convLion2Value(nowCubs{i});
-    %     nowCubsFitness(i) = fitness(vec(1), vec(2));
-    % end
     location = convLion2Value(nowCubs{1});
     for i=2:length(nowCubs)
         vec = convLion2Value(nowCubs{i});
@@ -60,7 +56,7 @@ while(nowGen <= Gen_max)
                 tempMaleCubsFitness(end+1) = fitness(vec(1), vec(2));
             end
             for j=1:distance
-                [big, bigIndex] = max(tempMaleCubsFitness);
+                [big, bigIndex] = max(tempMaleCubsFitness); %pick weak male cubs
                 tempMaleCubsFitness(bigIndex) = [];
                 maleCubs(bigIndex) = [];
             end
@@ -73,7 +69,7 @@ while(nowGen <= Gen_max)
                 tempFemaleCubsFitness(end+1) = fitness(vec(1), vec(2));
             end
             for j=1:distance
-                [big, bigIndex] = max(tempFemaleCubsFitness);
+                [big, bigIndex] = max(tempFemaleCubsFitness); %pick weak female cubs
                 tempFemaleCubsFitness(bigIndex) = [];
                 femaleCubs(bigIndex) = [];
             end
@@ -84,8 +80,8 @@ while(nowGen <= Gen_max)
     %Step3. Territorial Defense
     nowAge = 0;
     flag = true;
-    while(nowAge <= Age_mat)
-        nomalLion = getNewLion();
+    while(nowAge <= Age_mat)  %keep running until Age_mat
+        nomalLion = getNewLion(); %generate a nomal lion
         vec =  convLion2Value(nomalLion);
         nomalLionFit = fitness(vec(1), vec(2));
 
@@ -108,8 +104,11 @@ while(nowGen <= Gen_max)
          end
     end
     if(~flag)
-        continue
+        continue %goto mating(Step2)
     end
+    
+    %This Pride win over nomal Lion and cuns had matured
+    
     disp("Territorial Takeover");
     %Step4.Territorial Takeover
     vec = convLion2Value(Xm);
@@ -118,16 +117,16 @@ while(nowGen <= Gen_max)
     XfFit = fitness(vec(1), vec(2));
     maleCubsFitness = [];
     femaleCubsFitness = [];
-    for k=1:length(maleCubs)
+    for k=1:length(maleCubs) %count male cubs fitness
         vec = convLion2Value(maleCubs{k});
         maleCubsFitness(end+1) = fitness(vec(1), vec(2));
     end
-    for k=1:length(femaleCubs)
+    for k=1:length(femaleCubs) %count female cubs fitness
         vec = convLion2Value(femaleCubs{k});
         femaleCubsFitness(end+1) = fitness(vec(1), vec(2));
     end
-    [bestMaleCubs, bestMaleCubsIndex] = min(maleCubsFitness);
-    [bestFemaleCubs, bestFemaleCubsIndex] = min(femaleCubsFitness);
+    [bestMaleCubs, bestMaleCubsIndex] = min(maleCubsFitness);  %pick the best Male Cub Fitness Value
+    [bestFemaleCubs, bestFemaleCubsIndex] = min(femaleCubsFitness);  %pick the best Female Cub Fitness Value
     if(bestMaleCubs < XmFit)
      %bestMaleCubs win!!
         Xm = maleCubs{bestMaleCubsIndex};
@@ -140,7 +139,7 @@ while(nowGen <= Gen_max)
         %bestFemaleCubs lose.
         Bcount = Bcount + 1;
     end
-    vec = convLion2Value(Xf);
+    vec = convLion2Value(Xf);  %new Xf
     XfFit = fitness(vec(1), vec(2));
     if(Bcount>Bstrength)
         newFemaleLionFitness = 9999999999;
@@ -150,7 +149,7 @@ while(nowGen <= Gen_max)
             newFemaleLion = getNewLion();
             vec = convLion2Value(newFemaleLion);
             newFemaleLionFitness = fitness(vec(1), vec(2));
-            fprintf("count:%d, new:%f, old:%f \n",count,newFemaleLionFitness,XfFit);
+            fprintf("nowGen:%d,count:%d, new:%f, old:%f \n",nowGen,count,newFemaleLionFitness,XfFit);
             count = count+1;
             if(count > 10000)
                 newFemaleLion = Xf;
@@ -160,6 +159,5 @@ while(nowGen <= Gen_max)
         Xf = newFemaleLion;
     end
     nowGen = nowGen + 1;
-
 end
 
