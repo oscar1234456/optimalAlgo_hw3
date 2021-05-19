@@ -1,7 +1,7 @@
 %Initialization
 Age_mat = 3;
-Bstrength = 5;
-Gen_max = 100;
+Bstrength = 10;
+Gen_max = 50;
 Pc_1 = 0.2;
 Pc_2 = 0.6;
 Pm = 0.5;
@@ -10,7 +10,7 @@ Pm = 0.5;
 Bcount = 0;
 nowAge = 0;
 nowGen = 0;
-fitnessRecAll = zeros(1,Gen_max);
+fitnessRecAllLion = zeros(1,Gen_max);
 
 %Step1. Pride Generation
 %---Generate territorial male and female---
@@ -152,7 +152,7 @@ while(nowGen <= Gen_max) %keep running until Gen_max
             newFemaleLionFitness = fitness(vec(1), vec(2));
             fprintf("nowGen:%d,count:%d, new:%f, old:%f \n",nowGen,count,newFemaleLionFitness,XfFit);
             count = count+1;
-            if(count > 10000)
+            if(count > 1000)
                 newFemaleLion = Xf;
                 break
             end
@@ -172,10 +172,10 @@ while(nowGen <= Gen_max) %keep running until Gen_max
         %Xf win
         BestLionFitness = XfFit;
     end
-    fitnessRecAll(nowGen) = BestLionFitness;
+    fitnessRecAllLion(nowGen) = BestLionFitness;
 end
 nexttile
 title('每代染色體Fitness最大值')
-plot(1:Gen_max, fitnessRecAll(1:Gen_max));
+plot(1:Gen_max, fitnessRecAllLion(1:Gen_max));
 xlabel('Generation') 
 ylabel('Max Fitness') 
