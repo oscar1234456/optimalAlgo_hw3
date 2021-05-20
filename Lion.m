@@ -1,7 +1,7 @@
 %Initialization
 Age_mat = 3;
-Bstrength = 10;
-Gen_max = 50;
+Bstrength = 20;
+Gen_max = 100;
 Pc_1 = 0.2;
 Pc_2 = 0.6;
 Pm = 0.5;
@@ -178,4 +178,4 @@ nexttile
 title('每代染色體Fitness最大值')
 plot(1:Gen_max, fitnessRecAllLion(1:Gen_max));
 xlabel('Generation') 
-ylabel('Max Fitness') 
+ylabel('Min Objection Function Value') 
